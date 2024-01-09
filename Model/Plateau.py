@@ -1,5 +1,6 @@
 from Model.Constantes import *
 from Model.Pion import *
+import numpy as np
 
 
 #
@@ -34,7 +35,7 @@ def type_plateau(plateau: list) -> bool:
         return False
     return True
 
-def constuirePlateau()->list:
+def construirePlateau()->list:
     """
     Cette fonction crée un tableau 2D vide avec const.NB_LINES et const.NB_COLUMNS
 
@@ -47,4 +48,40 @@ def constuirePlateau()->list:
             plateau2.append(None)
         plateau.append(plateau2)
     return plateau
+def placerPionPlateau(plateau: list, pion: dict, num_col: int)->int:
+    """
+    Place un pion dans la colonne préciser, le pion tombe jusqu'à ce qu'il rencontre une
+    autre pion ou si il rencontre la dernière ligne, la fonction renvoie la ligne à laquelle le pion est placer
 
+    :param plateau: tableau 2D contenant const.NB_LINES et const.NB_COLUMNS
+    :param pion: dictionnaire représentant un pion
+    :param num_col: entier compris entre 0 et const.NB_COLUMNS-1
+    :return: retourne le numéro de la ligne où est placer le pion
+    """
+    if not type_plateau(plateau):
+        raise TypeError("placerPionPlateau : Le premier paramètre ne correspond pas à un plateau")
+    if not type_pion(pion):
+        raise TypeError("placerPionPlateau : Le second paramètre n'est pas un pion")
+    if type(num_col) != int:
+        raise TypeError("placePionPlateau : Le troisième paramètre n'est pas un entier")
+    if num_col < 0 or num_col >= const.NB_COLUMNS:
+        raise ValueError(f"placerPionPlateau : La valeur de la colonne {num_col} n'est pas correcte")
+
+    num_ligne = -1
+    if plateau[0][num_col] != None:
+        return num_ligne
+    else:
+        num_ligne = 0
+    pionPlacer = False
+    while num_ligne <= 5 and not pionPlacer:
+        if plateau[num_ligne][num_col] != None:
+            plateau[num_ligne-1][num_col] = pion
+            ligne = num_ligne - 1
+            pionPlacer = True
+        else:
+            num_ligne += 1
+    if pionPlacer == False and plateau[5][num_col] == None:
+        plateau[5][num_col] = pion
+        ligne = 5
+        pionPlacer = True
+    return ligne
