@@ -25,4 +25,24 @@ def type_pion(pion: dict) -> bool:
         and pion[const.COULEUR] in const.COULEURS \
         and (pion[const.ID] is None or type(pion[const.ID]) == int)
 
+def construirePion(couleur: int)-> dict:
+    """
+    Construit un pion selon la couleur reçu en paramètre
+
+    :param couleur: entier qui vaut 1 ou 0
+    :return: retourne un pion
+    """
+    if couleur == 1:
+        pion = {const.COULEUR: const.COULEURS[1], const.ID: None}
+    elif couleur == 0:
+        pion = {const.COULEUR: const.COULEURS[0], const.ID: None}
+    #raise ValueError(f"construirePion : la couleur {couleur} n'est pas correct")
+    #raise TypeError("construirePion : Le paramètre n'est pas de type entier")
+    return pion
+
+
+
+
+
+
 
