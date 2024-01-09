@@ -63,8 +63,14 @@ def setCouleurPion(pion: dict, couleur: int)->None:
     pion[const.COULEUR] = couleur
     return None
 
+def getIdPion(pion: dict)->int:
+    """
+    Cette fonction retourne l'identifiant du pion en paramètre
 
-
-
-
+    :param pion: dictionnaire représentant un pion
+    :return: retourne l'Id du pion
+    """
+    id = pion[const.ID]
+    return id
+print(getIdPion(pion))
 
