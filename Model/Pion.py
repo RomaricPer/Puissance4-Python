@@ -52,6 +52,17 @@ def getCouleurPion(pion: dict)->int:
     return couleur
 print(getCouleurPion(pion))
 
+def setCouleurPion(pion: dict, couleur: int)->None:
+    """
+    Remplace la couleur d'un pion par la couleur donner
+
+    :param pion: dictionnaire représentant un pion
+    :param couleur: '1' pour rouge, '0' pour jaune
+    :return: Rien
+    """
+    pion[const.COULEUR] = couleur
+    return None
+
 
 
 
