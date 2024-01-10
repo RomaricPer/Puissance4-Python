@@ -1,6 +1,7 @@
 from Model.Constantes import *
 from Model.Pion import *
 import numpy as np
+from random import randint, choice
 
 
 #
@@ -85,3 +86,32 @@ def placerPionPlateau(plateau: list, pion: dict, num_col: int)->int:
         ligne = 5
         pionPlacer = True
     return ligne
+
+def detecter4horizontalPlateau(plateau: list, couleur: int)-> list:
+    """
+    Fait une liste des pions qui sont alignés par 4, la liste peut être vide si il n'y a pas de série.
+    Si 5 pions sont alignés : la fonction renverra les 4 premiers pions seulement (avec les plus petits indices)
+    La liste retourner peut contenir plusieurs séries de 4 pions, et pas juste une seule.
+
+    :param plateau: liste 2D représentant le plateau
+    :param couleur: entier qui vaut 1 ou 0
+    :return: retourne une liste contenant la ou les séries de 4 pions alignés, ou une liste vide si pas de série
+    """
+
+    if not type_plateau(plateau):
+        raise TypeError("detecter4horizontalPlateau : Le premier paramètre ne correspond pas à un plateau")
+    if type(couleur) != int:
+        raise TypeError("detecter4horizontalPlateau : Le second paramètre n'est pas un entier")
+    if couleur != 1 and couleur != 0:
+        raise ValueError(f"detecter4horizontalPlateau : La valeur de la couleur {couleur} n'est pas correcte")
+
+    liste_serie = []
+    for lignes in plateau:
+        for i in range(len(lignes)-3):
+            if lignes[i] != None and lignes[i+1] != None and lignes[i+2] != None and lignes[i+3] != None:
+                serie_pion = [lignes[i],lignes[i+1],lignes[i+2],lignes[i+3]]
+                if getCouleurPion(serie_pion[0]) == couleur and  getCouleurPion(serie_pion[1]) == couleur and  getCouleurPion(serie_pion[2]) == couleur and  getCouleurPion(serie_pion[3]) == couleur:
+                    liste_serie.extend(serie_pion)
+                else:
+                    del serie_pion
+    return liste_serie
