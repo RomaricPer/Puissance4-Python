@@ -146,7 +146,7 @@ def detecter4verticalPlateau(plateau: list, couleur: int)-> list:
 
 def detecter4diagonaleIndirectePlateau(plateau: list, couleur: int)-> list:
     """
-    Fait une liste des pions qui sont alignés par 4 diagonalement (du bas vers le haut), la liste peut être vide si il n'y a pas de série.
+    Fait une liste des pions qui sont alignés par 4 diagonalement (du bas vers le haut, de gauche à droite), la liste peut être vide si il n'y a pas de série.
     Si 5 pions sont alignés : la fonction renverra les 4 premiers pions seulement (avec les plus petits indices)
     La liste retourner peut contenir plusieurs séries de 4 pions, et pas juste une seule.
 
@@ -165,6 +165,33 @@ def detecter4diagonaleIndirectePlateau(plateau: list, couleur: int)-> list:
         for colonnes in range(lignes):
             if plateau[lignes][colonnes]!=None and plateau[lignes-1][colonnes+1] != None and plateau[lignes-2][colonnes+2] != None and plateau[lignes-3][colonnes+3] != None:
                 serie_pion = [plateau[lignes][colonnes],plateau[lignes-1][colonnes+1],plateau[lignes-2][colonnes+2],plateau[lignes-3][colonnes+3]]
+                if getCouleurPion(serie_pion[0]) == couleur and getCouleurPion(serie_pion[1]) == couleur and getCouleurPion(serie_pion[2]) == couleur and getCouleurPion(serie_pion[3]) == couleur:
+                    liste_serie.extend(serie_pion)
+                else:
+                    del serie_pion
+    return liste_serie
+
+def detecter4diagonaleDirectePlateau(plateau: list, couleur: int)->list:
+    """
+        Fait une liste des pions qui sont alignés par 4 diagonalement (du haut vers le bas, de gauche à droite), la liste peut être vide si il n'y a pas de série.
+        Si 5 pions sont alignés : la fonction renverra les 4 premiers pions seulement (avec les plus petits indices)
+        La liste retourner peut contenir plusieurs séries de 4 pions, et pas juste une seule.
+
+        :param plateau: liste 2D représentant le plateau
+        :param couleur: entier qui vaut 1 ou 0
+        :return: retourne une liste contenant la ou les séries de 4 pions alignés, ou une liste vide si pas de série
+        """
+    if not type_plateau(plateau):
+        raise TypeError("detecter4diagonaleDirectePlateau : Le premier paramètre ne correspond pas à un plateau")
+    if type(couleur) != int:
+        raise TypeError("detecter4diagonaleDirectePlateau : Le second paramètre n'est pas un entier")
+    if couleur != 1 and couleur != 0:
+        raise ValueError(f"detecter4diagonaleDirectePlateau : La valeur de la couleur {couleur} n'est pas correcte")
+    liste_serie = []
+    for lignes in range(len(plateau)-3):
+        for colonnes in range(len(plateau[lignes])-3):
+            if plateau[lignes][colonnes] != None and plateau[lignes+1][colonnes+1] != None and plateau[lignes+2][colonnes+2] != None and plateau[lignes+3][colonnes+3] != None:
+                serie_pion = [plateau[lignes][colonnes],plateau[lignes+1][colonnes+1],plateau[lignes+2][colonnes+2],plateau[lignes+3][colonnes+3]]
                 if getCouleurPion(serie_pion[0]) == couleur and getCouleurPion(serie_pion[1]) == couleur and getCouleurPion(serie_pion[2]) == couleur and getCouleurPion(serie_pion[3]) == couleur:
                     liste_serie.extend(serie_pion)
                 else:
