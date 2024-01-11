@@ -53,4 +53,35 @@ def construireJoueur(couleur: int)-> dict:
         joueur = {const.COULEUR: const.ROUGE, const.PLATEAU: None, const.PLACER_PION: None}
     return joueur
 
+def getCouleurJoueur(joueur: dict) -> int:
+    """
+    Renvoie la couleur du joueur en paramètre
 
+    :param joueur: Dictionnaire représentant un joueur
+    :return: retourne 1 ou 0
+    """
+    if not type_joueur(joueur):
+        raise TypeError("getCouleurJoueur: Le paramètre ne correspond pas à joueur")
+    return joueur[const.COULEUR]
+
+def getPlateauJoueur(joueur: dict) -> list:
+    """
+    Renvoie le plateu lié au joueur
+
+    :param joueur: Dictionnaire représentant un joueur
+    :return: retourne le plateau lié au joueur en forme de liste 2D
+    """
+    if not type_joueur(joueur):
+        raise TypeError("getPlateauJoueur: Le paramètre ne correspond pas à joueur")
+    return joueur[const.PLATEAU]
+
+def getPlacerPionJoueur(joueur: dict)-> None:
+    """
+    Renvoie la fonction qui permet de savoir si le joueur peut jouer ou non
+
+    :param joueur: dictionnaire représenant un joueur
+    :return:
+    """
+    if not type_joueur(joueur):
+        raise TypeError("getPlacerPionJoueur: Le paramètre ne correspond pas à joueur")
+    return joueur[const.PLACER_PION]
