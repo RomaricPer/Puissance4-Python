@@ -41,8 +41,7 @@ def construirePion(couleur: int)-> dict:
     if couleur != 1 and couleur != 0:
         raise ValueError(f"construirePion : la couleur {couleur} n'est pas correct")
     return pion
-pion = construirePion(1)
-print(pion)
+
 def getCouleurPion(pion: dict)->int:
     """
     Cette fonction retourne la couleur d'un pion, '1' pour rouge, '0' pour jaune
@@ -55,7 +54,6 @@ def getCouleurPion(pion: dict)->int:
     else:
         couleur = pion[const.COULEUR]
     return couleur
-print(getCouleurPion(pion))
 
 def setCouleurPion(pion: dict, couleur: int)->None:
     """
@@ -85,7 +83,6 @@ def getIdPion(pion: dict)->int:
     if not type_pion(pion):
         raise TypeError("getIdPion : Le paramètre n'est pas un pion")
     return id
-print(getIdPion(pion))
 
 def setIdPion(pion: dict, id: int)->None:
     """

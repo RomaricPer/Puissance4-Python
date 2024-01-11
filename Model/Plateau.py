@@ -197,3 +197,26 @@ def detecter4diagonaleDirectePlateau(plateau: list, couleur: int)->list:
                 else:
                     del serie_pion
     return liste_serie
+
+def getPionsGagnantsPlateau(plateau: list)->list:
+    """
+    Fait une liste de toutes les séries de pions alignés par couleur.,
+    :param plateau:
+    :return:
+    """
+    if not type_plateau(plateau):
+        raise TypeError("getPionsGagnantsPlateau : Le paramètre n'est pas un plateau")
+    liste_pions_gagnants = []
+    # on récupère les pions gagnants jaunes
+    liste_pions_gagnants.extend(detecter4verticalPlateau(plateau, 0))
+    liste_pions_gagnants.extend(detecter4horizontalPlateau(plateau, 0))
+    liste_pions_gagnants.extend(detecter4diagonaleDirectePlateau(plateau, 0))
+    liste_pions_gagnants.extend(detecter4diagonaleIndirectePlateau(plateau,0))
+    # on récupère les pions gagnants rouges
+    liste_pions_gagnants.extend(detecter4verticalPlateau(plateau, 1))
+    liste_pions_gagnants.extend(detecter4horizontalPlateau(plateau, 1))
+    liste_pions_gagnants.extend(detecter4diagonaleDirectePlateau(plateau, 1))
+    liste_pions_gagnants.extend(detecter4diagonaleIndirectePlateau(plateau, 1))
+    return liste_pions_gagnants
+
+
