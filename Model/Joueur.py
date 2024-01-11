@@ -97,3 +97,33 @@ def getPionJoueur(joueur: dict)-> dict:
         raise TypeError("getPionJoueur: Le paramètre ne correspond pas à joueur")
     pion = construirePion(joueur[const.COULEUR])
     return pion
+
+def setPlateauJoueur(joueur: dict, plateau: list)-> None:
+    """
+    Affecte un plateau en paramètre à un joueur mis en paramètre
+
+    :param joueur: dictionnaire représentant un dictionnaire
+    :param plateau: liste 2D représentant un plateau
+    :return: Rien
+    """
+    if not type_joueur(joueur):
+        raise TypeError("setPlateauJoueur : Le premier paramètre ne correspond pas à joueur")
+    if not type_plateau(plateau):
+        raise TypeError("setPlateauJoueur : Le second paramètre ne correpond pas à un plateau")
+    joueur[const.PLATEAU] = plateau
+    return None
+
+def setPlacerPionJoueur(joueur: dict, fn)->None:
+    """
+    Affecte une fonction mis en paramètre au joueur
+
+    :param joueur: dictionnaire représentant un joueur
+    :param fn: fonction appelable
+    :return: Rien
+    """
+    if not type_joueur(joueur):
+        raise TypeError("setPlacerPionJoueur : Le premier paramètre ne correspond pas à joueur")
+    if not callable(fn):
+        raise TypeError("setPlacerPionJoueur : Le second paramètre n'est pas une fonction")
+    joueur[const.PLACER_PION] = fn
+    return None
