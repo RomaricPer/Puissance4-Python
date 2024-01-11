@@ -200,9 +200,10 @@ def detecter4diagonaleDirectePlateau(plateau: list, couleur: int)->list:
 
 def getPionsGagnantsPlateau(plateau: list)->list:
     """
-    Fait une liste de toutes les séries de pions alignés par couleur.,
-    :param plateau:
-    :return:
+    Fait une liste de toutes les séries de 4 pions alignés en prenant en compte les deux couleur
+
+    :param plateau: liste 2D représentant un plateau
+    :return: retourne une liste des pions gagnants
     """
     if not type_plateau(plateau):
         raise TypeError("getPionsGagnantsPlateau : Le paramètre n'est pas un plateau")
@@ -219,4 +220,19 @@ def getPionsGagnantsPlateau(plateau: list)->list:
     liste_pions_gagnants.extend(detecter4diagonaleIndirectePlateau(plateau, 1))
     return liste_pions_gagnants
 
+def isRempliPlateau(plateau: list)-> bool:
+    """
+    Renvoie True si le plateau est rempli, False si ce n'est pas le cas
 
+    :param plateau: liste 2D représentant un plateau
+    :return: un booléen
+    """
+    if not type_plateau(plateau):
+        raise TypeError("isRempliPlateau : Le paramètre n'est pas un plateau")
+    pions_premiere_ligne = []
+    for col in range(len(plateau[0])):
+        if plateau[0][col] != None:
+            pions_premiere_ligne.append(plateau[0][col])
+        else:
+            pions_premiere_ligne = []
+    return len(pions_premiere_ligne) == const.NB_COLUMNS
