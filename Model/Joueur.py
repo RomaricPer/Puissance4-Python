@@ -72,7 +72,7 @@ def getPlateauJoueur(joueur: dict) -> list:
     :return: retourne le plateau lié au joueur en forme de liste 2D
     """
     if not type_joueur(joueur):
-        raise TypeError("getPlateauJoueur: Le paramètre ne correspond pas à joueur")
+        raise TypeError("getPlateauJoueur: Le paramètre ne correspond pas à un joueur")
     return joueur[const.PLATEAU]
 
 def getPlacerPionJoueur(joueur: dict)-> None:
@@ -126,4 +126,36 @@ def setPlacerPionJoueur(joueur: dict, fn)->None:
     if not callable(fn):
         raise TypeError("setPlacerPionJoueur : Le second paramètre n'est pas une fonction")
     joueur[const.PLACER_PION] = fn
+    return None
+
+def _placerPionJoueur(joueur: dict)->int:
+    """
+    Place un pion aléatoirement dans une colonne entre 0 et const.NB_COLUMNS -1
+
+    :param joueur: dictionnaire représentant un joueur
+    :return: un entier représentant une colonne
+    """
+    num_col = randint(0,const.NB_COLUMNS-1)
+    plateau = joueur[const.PLATEAU]
+    while plateau[0][num_col] != None:
+        num_col = randint(0, const.NB_COLUMNS - 1)
+    return num_col
+
+def initialiserIAJoueur(joueur: dict, booleen: bool)->None:
+    """
+    Initialise si un joueur joue en premier ou en second selon la valeur du booléen:
+    True lorsqu'il commence, False lorsqu'il est second
+
+    :param joueur: dictionnaire représentant un joueur
+    :param booleen: True si le joueur commence, False sinon
+    :return: Rien
+    """
+    if not type_joueur(joueur):
+        raise TypeError("initialiserIAJoueur : Le premier paramètre ne correspond pas à joueur")
+    if type(booleen) != bool:
+        raise TypeError("initialiserIAJoueur : Le second paramètre n'est pas un booléen")
+    if booleen:
+        setPlacerPionJoueur(joueur,_placerPionJoueur)
+    if not booleen:
+        setPlacerPionJoueur(joueur,_placerPionJoueur)
     return None
