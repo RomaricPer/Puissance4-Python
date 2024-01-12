@@ -132,17 +132,15 @@ def detecter4verticalPlateau(plateau: list, couleur: int)-> list:
         raise TypeError("detecter4verticalPlateau : Le second paramètre n'est pas un entier")
     if couleur != 1 and couleur != 0:
         raise ValueError(f"detecter4verticalPlateau : La valeur de la couleur {couleur} n'est pas correcte")
-
     liste_serie = []
-    for colonnes in range(len(plateau)):
-        for i in range(5):
-            if plateau[i][colonnes] != None and plateau[i+1][colonnes] != None and  plateau[i+2][colonnes] != None and  plateau[i+3][colonnes] != None:
-                serie_pion = [plateau[i][colonnes], plateau[i+1][colonnes], plateau[i+2][colonnes], plateau[i+3][colonnes]]
-                if getCouleurPion(serie_pion[0]) == couleur and getCouleurPion(serie_pion[1]) == couleur and getCouleurPion(serie_pion[2]) == couleur and getCouleurPion(serie_pion[3]) == couleur:
+    for colonne in range(len(plateau[0])):
+        for ligne in range(len(plateau) - 3):
+            if (plateau[ligne][colonne] != None and plateau[ligne + 1][colonne] != None and plateau[ligne + 2][colonne] != None and plateau[ligne + 3][colonne] != None):
+                serie_pion = [plateau[ligne][colonne],plateau[ligne + 1][colonne],plateau[ligne + 2][colonne],plateau[ligne + 3][colonne]]
+                if (getCouleurPion(serie_pion[0]) == couleur and getCouleurPion(serie_pion[1]) == couleur and getCouleurPion(serie_pion[2]) == couleur and getCouleurPion(serie_pion[3]) == couleur):
                     liste_serie.extend(serie_pion)
-                else:
-                    del serie_pion
     return liste_serie
+
 
 def detecter4diagonaleIndirectePlateau(plateau: list, couleur: int)-> list:
     """
@@ -162,7 +160,7 @@ def detecter4diagonaleIndirectePlateau(plateau: list, couleur: int)-> list:
         raise ValueError(f"detecter4diagonaleIndirectePlateau : La valeur de la couleur {couleur} n'est pas correcte")
     liste_serie = []
     for lignes in range(3,len(plateau)):
-        for colonnes in range(lignes):
+        for colonnes in range(lignes-3):
             if plateau[lignes][colonnes]!=None and plateau[lignes-1][colonnes+1] != None and plateau[lignes-2][colonnes+2] != None and plateau[lignes-3][colonnes+3] != None:
                 serie_pion = [plateau[lignes][colonnes],plateau[lignes-1][colonnes+1],plateau[lignes-2][colonnes+2],plateau[lignes-3][colonnes+3]]
                 if getCouleurPion(serie_pion[0]) == couleur and getCouleurPion(serie_pion[1]) == couleur and getCouleurPion(serie_pion[2]) == couleur and getCouleurPion(serie_pion[3]) == couleur:
