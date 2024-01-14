@@ -135,10 +135,14 @@ def _placerPionJoueur(joueur: dict)->int:
     :param joueur: dictionnaire représentant un joueur
     :return: un entier représentant une colonne
     """
-    num_col = randint(0,const.NB_COLUMNS-1)
-    plateau = joueur[const.PLATEAU]
-    while plateau[0][num_col] != None:
-        num_col = randint(0, const.NB_COLUMNS - 1)
+    if const.MODE_ETENDU not in joueur:
+        num_col = randint(0,const.NB_COLUMNS-1)
+        plateau = joueur[const.PLATEAU]
+        while plateau[0][num_col] != None:
+            num_col = randint(0, const.NB_COLUMNS - 1)
+    else:
+        num_col = randint(-const.NB_LINES,const.NB_COLUMNS + const.NB_LINES -1)
+        plateau = joueur[const.PLATEAU]
     return num_col
 
 def initialiserIAJoueur(joueur: dict, booleen: bool)->None:
@@ -158,4 +162,36 @@ def initialiserIAJoueur(joueur: dict, booleen: bool)->None:
         setPlacerPionJoueur(joueur,_placerPionJoueur)
     if not booleen:
         setPlacerPionJoueur(joueur,_placerPionJoueur)
+    return None
+
+def getModeEtenduJoueur(joueur: dict)-> bool:
+    """
+    Fonction qui renvoie True ou False, qui sert à savoir si le mode étendue est sélectionné ou non
+
+    :param joueur: dictionnaire représentant un joueur
+    :return: retourne True ou False selon le mode choisi
+    """
+    if not type_joueur(joueur):
+        raise TypeError("getModeEtenduJoueur : le paramètre ne correspond pas à un joueur")
+
+    return const.MODE_ETENDU in joueur
+
+def setModeEtenduJoueur(joueur: dict, etendu: bool) -> None:
+    """
+    Ajoute ou supprime au dictionnaire du joueur la clé const.MODE_ETENDU
+
+    :param joueur: dictionnaire représentant le joueur
+    :param etendu: Vaut True ou False, si True : on ajoute la clé, sinon on supprime la clé
+    :return: Rien
+    """
+    if not type_joueur(joueur):
+        raise TypeError("setModeEtenduJoueur : Le premier paramètre ne correspond pas à un joueur")
+    if type(etendu) != bool:
+        raise TypeError("setModeEtenduJoueur : Le second paramètre ne correspond pas à un booléen")
+
+    if etendu:
+        joueur[const.MODE_ETENDU] = True
+    else :
+        if const.MODE_ETENDU in joueur:
+            del joueur[const.MODE_ETENDU]
     return None

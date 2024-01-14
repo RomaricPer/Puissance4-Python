@@ -32,9 +32,9 @@ def construirePion(couleur: int)-> dict:
     :param couleur: entier qui vaut 1 ou 0
     :return: retourne un pion
     """
-    if couleur == 1:
+    if couleur == const.ROUGE:
         pion = {const.COULEUR: const.COULEURS[1], const.ID: None}
-    elif couleur == 0:
+    elif couleur == const.JAUNE:
         pion = {const.COULEUR: const.COULEURS[0], const.ID: None}
     if type(couleur) != int:
         raise TypeError("construirePion : Le paramètre n'est pas de type entier")

@@ -234,3 +234,106 @@ def isRempliPlateau(plateau: list)-> bool:
         else:
             pions_premiere_ligne = []
     return len(pions_premiere_ligne) == const.NB_COLUMNS
+
+def placerPionLignePlateau(plateau: list, pion: dict,num_ligne : int, left: bool):
+    """
+    Cette fonction permet de placer des pions par la gauche ou la droite du plateau,
+    elle place un pion à la ligne indiqué et par le côté indiqué
+
+    :param plateau: liste 2D représentant un plateau
+    :param pion: dictionnaire représentant un pion
+    :param num_ligne: entier qui correspond à un numéro de ligne
+    :param left: indique par où on insère le pion
+    :return: retourne un tuple contenant la liste des pions poussés et un entier qui correspond
+            à la ligne du dernier pion de la liste (None si pion change pas de ligne)
+    """
+    if not type_plateau(plateau):
+        raise TypeError("placerPionLignePlateau : Le premier paramètre n'est pas un plateau")
+    if not type_pion(pion):
+        raise TypeError("placerPionLignePlateau : Le second paramètre n'est pas un pion")
+    if type(num_ligne) != int:
+        raise TypeError("placerPionLignePlateau : Le troisième paramètre n'est pas un entier")
+    if num_ligne<0 or num_ligne>const.NB_LINES-1:
+        raise ValueError(f"placerPionLignePlateau : Le troisième paramètre {num_ligne} ne désigne pas une ligne")
+    if type(left) is not bool:
+        raise TypeError("placerPionLignePlateau : Le quatrième paramètre n'est pas un booléen")
+
+    liste_pion = [pion]
+    ligne_dernier_pion = None
+
+    if left:
+        i = 0
+        while i < const.NB_COLUMNS and plateau[num_ligne][i] is not None:
+            liste_pion.append(plateau[num_ligne][i])
+            i += 1
+
+        for k in range(len(liste_pion) - 1):
+            plateau[num_ligne][k] = liste_pion[k]
+        del liste_pion[1]
+
+        ligne_dernier_pion = num_ligne
+        while ligne_dernier_pion + 1 < const.NB_LINES and plateau[ligne_dernier_pion + 1][len(liste_pion) - 1] is None:
+            plateau[ligne_dernier_pion + 1][len(liste_pion) - 1] = plateau[ligne_dernier_pion][len(liste_pion) - 1]
+            plateau[ligne_dernier_pion][len(liste_pion) - 1] = None
+            ligne_dernier_pion += 1
+    else:
+        i = const.NB_COLUMNS - 1
+        while i >= 0 and plateau[num_ligne][i] is not None:
+            liste_pion.append(plateau[num_ligne][i])
+            i -= 1
+
+        for k in range(min(len(liste_pion), const.NB_COLUMNS)):
+            plateau[num_ligne][const.NB_COLUMNS - 1 - k] = liste_pion[k]
+        del liste_pion[-1]
+
+        ligne_dernier_pion = num_ligne
+        while ligne_dernier_pion + 1 < const.NB_LINES and plateau[ligne_dernier_pion + 1][const.NB_COLUMNS - 1 - len(liste_pion) + 1] is None:
+            plateau[ligne_dernier_pion + 1][const.NB_COLUMNS - 1 - len(liste_pion) + 1] = plateau[ligne_dernier_pion][const.NB_COLUMNS - 1 - len(liste_pion) + 1]
+            plateau[ligne_dernier_pion][const.NB_COLUMNS - 1 - len(liste_pion) + 1] = None
+            ligne_dernier_pion += 1
+
+    return liste_pion, ligne_dernier_pion
+def encoderPlateau(plateau: list) -> str:
+    """
+    Cette fonction transforme le plateau en chaine de caractère, elle sert à stocker le plateau pour la fonction isPatPlateau
+
+    :param plateau: liste 2D représentant un plateau
+    :return: retourne une version str du plateau en paramètre
+    """
+    if not type_plateau(plateau) :
+        raise TypeError("encoderPlateau : le paramètre ne correspond pas à un plateau.")
+
+    encodage = ""
+
+    for ligne in plateau:
+        for case in ligne:
+            if case is None:
+                encodage += "_"
+            elif case['Couleur'] == 0:
+                encodage += "J"
+            elif case['Couleur'] == 1:
+                encodage += "R"
+
+    return encodage
+def isPatPlateau(plateau: list, histogramme_plateaux: dict) -> bool:
+    """
+    Définit si une partie est nulle ou non selon le nombre de fois que le plateau a été identique dans une partie
+
+    :param plateau:
+    :param histogramme_plateaux:
+    :return: retourne True ou False selon si le plateau à déjà été similaire 5 fois ou non
+    """
+
+    if not(type_plateau(plateau)):
+        raise TypeError("isPatPlateau : le paramètre ne correspond pas à un plateau.")
+    if type(histogramme_plateaux) != dict:
+        raise TypeError("isPatPlateau : Le second paramètre n’est pas un dictionnaire ")
+
+    clef = encoderPlateau(plateau)
+
+    if clef in histogramme_plateaux:
+        histogramme_plateaux[clef] += 1
+        return histogramme_plateaux[clef] >= 5
+    else:
+        histogramme_plateaux[clef] = 1
+        return False
